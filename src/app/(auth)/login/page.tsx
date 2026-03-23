@@ -51,7 +51,7 @@ function LoginForm() {
     setLoading(true);
     setMessage(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -60,7 +60,18 @@ function LoginForm() {
     if (error) {
       setMessage({ type: "error", text: error.message });
     } else {
-      router.push(redirect);
+      // Check role to redirect admin
+      const { data: profile } = await supabase
+        .from("gift_profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profile?.role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push(redirect);
+      }
     }
   }
 

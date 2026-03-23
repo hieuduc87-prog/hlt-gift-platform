@@ -154,7 +154,7 @@ function OrderCard({ order }: { order: GiftOrder }) {
   const statusCfg = ORDER_STATUS_CONFIG[order.status];
 
   return (
-    <Link href="#">
+    <Link href={`/orders/${order.id}`}>
       <Card variant="hover" className="cursor-pointer">
         <div className="flex items-start justify-between gap-4">
           {/* Left: Info */}

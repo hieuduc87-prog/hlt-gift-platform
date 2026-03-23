@@ -1,13 +1,15 @@
 import { updateSession } from "@/lib/supabase/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/", "/auth", "/login", "/register"];
+const PUBLIC_PATHS = ["/", "/auth", "/login", "/register", "/catalog", "/gift"];
 const CLIENT_PATHS = [
   "/dashboard",
   "/recipients",
   "/orders",
+  "/subscriptions",
   "/wallet",
   "/cards",
+  "/loyalty",
   "/settings",
 ];
 const ADMIN_PATHS = ["/admin"];

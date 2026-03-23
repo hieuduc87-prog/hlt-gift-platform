@@ -2,15 +2,31 @@ import { createServiceClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/formatters";
 import type { GiftProfile, GiftWallet } from "@/types";
 import { Users } from "lucide-react";
+import Link from "next/link";
+import { ClientSearch } from "./client-search";
 
-export default async function AdminClientsPage() {
+export default async function AdminClientsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
   const supabase = createServiceClient();
 
-  const { data } = await supabase
+  let query = supabase
     .from("gift_profiles")
     .select("*, gift_wallets(balance)")
     .neq("role", "admin")
     .order("created_at", { ascending: false });
+
+  if (q && q.trim()) {
+    const search = `%${q.trim()}%`;
+    query = query.or(
+      `full_name.ilike.${search},email.ilike.${search},phone.ilike.${search}`
+    );
+  }
+
+  const { data } = await query;
 
   const clients = (data || []) as (GiftProfile & {
     gift_wallets: Pick<GiftWallet, "balance">[] | null;
@@ -19,19 +35,26 @@ export default async function AdminClientsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-display text-gold">Khách hàng</h1>
-        <p className="mt-1 text-admin-text-secondary">
-          Quản lý khách hàng ({clients.length})
-        </p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-display text-gold">Khách hàng</h1>
+          <p className="mt-1 text-admin-text-secondary">
+            Quản lý khách hàng ({clients.length})
+          </p>
+        </div>
       </div>
+
+      {/* Search */}
+      <ClientSearch defaultValue={q || ""} />
 
       {/* Table */}
       <div className="bg-admin-surface border border-admin-border rounded-xl overflow-hidden">
         {clients.length === 0 ? (
           <div className="p-12 text-center">
             <Users size={36} className="mx-auto text-admin-text-secondary mb-3" />
-            <p className="text-admin-text-secondary">Chưa có khách hàng nào</p>
+            <p className="text-admin-text-secondary">
+              {q ? "Không tìm thấy khách hàng nào" : "Chưa có khách hàng nào"}
+            </p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -60,8 +83,13 @@ export default async function AdminClientsPage() {
                       key={client.id}
                       className="border-b border-admin-border last:border-b-0 hover:bg-admin-surface-hover transition-colors"
                     >
-                      <td className="px-5 py-3 text-admin-text font-medium">
-                        {client.full_name}
+                      <td className="px-5 py-3">
+                        <Link
+                          href={`/admin/clients/${client.id}`}
+                          className="text-admin-text font-medium hover:text-gold transition-colors"
+                        >
+                          {client.full_name}
+                        </Link>
                       </td>
                       <td className="px-5 py-3 text-admin-text-secondary">
                         {client.email || "—"}

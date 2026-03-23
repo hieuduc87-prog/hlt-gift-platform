@@ -36,7 +36,9 @@ export default async function AdminLayout({
           {[
             { href: "/admin", label: "Dashboard" },
             { href: "/admin/orders", label: "Đơn hàng" },
+            { href: "/admin/combos", label: "Sản phẩm" },
             { href: "/admin/clients", label: "Khách hàng" },
+            { href: "/admin/delivery", label: "Giao hàng" },
             { href: "/admin/cards", label: "Thiệp mẫu" },
             { href: "/admin/finance", label: "Tài chính" },
           ].map((item) => (

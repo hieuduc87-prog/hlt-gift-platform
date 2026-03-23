@@ -29,6 +29,9 @@ export default async function ClientLayout({
       .single(),
   ]);
 
+  // Admin users → redirect to admin panel
+  if (profileRes.data?.role === "admin") redirect("/admin");
+
   const userName = profileRes.data?.full_name || user.email || "User";
   const walletBalance = Number(walletRes.data?.balance || 0);
 

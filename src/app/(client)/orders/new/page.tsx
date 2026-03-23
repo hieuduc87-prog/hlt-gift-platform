@@ -61,28 +61,32 @@ export default function NewOrderPage() {
 
     const code = `GIFT-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}-${Math.random().toString(36).slice(2, 5).toUpperCase()}`;
 
-    const { error: err } = await supabase.from("gift_orders").insert({
-      code,
-      profile_id: user.id,
-      recipient_id: selectedRecipient.id,
-      combo_tier_id: selectedCombo.id,
-      recipient_name: selectedRecipient.full_name,
-      recipient_phone: selectedRecipient.phone,
-      delivery_address: deliveryAddress,
-      delivery_date: deliveryDate || null,
-      delivery_time: deliveryTime,
-      delivery_note: deliveryNote,
-      card_message: cardMessage,
-      subtotal: selectedCombo.price,
-      total: selectedCombo.price,
-      status: "draft",
-    });
+    const { data: newOrder, error: err } = await supabase
+      .from("gift_orders")
+      .insert({
+        code,
+        profile_id: user.id,
+        recipient_id: selectedRecipient.id,
+        combo_tier_id: selectedCombo.id,
+        recipient_name: selectedRecipient.full_name,
+        recipient_phone: selectedRecipient.phone,
+        delivery_address: deliveryAddress,
+        delivery_date: deliveryDate || null,
+        delivery_time: deliveryTime,
+        delivery_note: deliveryNote,
+        card_message: cardMessage,
+        subtotal: selectedCombo.price,
+        total: selectedCombo.price,
+        status: "draft",
+      })
+      .select("id")
+      .single();
 
-    if (err) {
-      setError(err.message);
+    if (err || !newOrder) {
+      setError(err?.message || "Có lỗi xảy ra");
       setSubmitting(false);
     } else {
-      router.push("/orders");
+      router.push(`/orders/${newOrder.id}`);
     }
   }
 

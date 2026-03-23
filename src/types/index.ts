@@ -58,8 +58,22 @@ export interface GiftProfile {
   company_tax_code: string | null;
   company_address: string | null;
   is_active: boolean;
+  last_active_at: string | null;
+  admin_notes: string | null;
+  source: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface GiftOrderTimelineEvent {
+  id: string;
+  order_id: string;
+  status: GiftOrderStatus;
+  actor_id: string | null;
+  actor_type: string;
+  note: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
 }
 
 export interface GiftWallet {
@@ -92,6 +106,13 @@ export interface GiftComboTier {
   price: number;
   includes: string[];
   image_url: string | null;
+  images: string[];
+  occasion_types: string[];
+  seasonal_start: string | null;
+  seasonal_end: string | null;
+  max_orders_per_day: number | null;
+  delivery_areas: string[];
+  popularity_score: number;
   is_active: boolean;
   sort_order: number;
   created_at: string;
@@ -133,6 +154,8 @@ export interface GiftOccasion {
   updated_at: string;
 }
 
+export type GiftPaymentMethod = "wallet" | "bank_transfer" | "cod" | "momo";
+
 export interface GiftOrder {
   id: string;
   code: string;
@@ -147,14 +170,29 @@ export interface GiftOrder {
   delivery_date: string | null;
   delivery_time: string | null;
   delivery_note: string | null;
+  delivery_photo_url: string | null;
+  delivery_photos: string[];
+  delivery_fee: number;
+  delivery_city: string;
   subtotal: number;
   discount: number;
   total: number;
+  payment_method: GiftPaymentMethod;
   payment_status: GiftPaymentStatus;
+  paid_at: string | null;
+  confirmed_at: string | null;
+  delivered_at: string | null;
+  cancelled_at: string | null;
+  cancel_reason: string | null;
   card_message: string | null;
   card_template_id: string | null;
   status: GiftOrderStatus;
   timeline: Record<string, unknown>[];
+  assigned_staff_id: string | null;
+  internal_note: string | null;
+  promotion_id: string | null;
+  promotion_code: string | null;
+  promotion_discount: number;
   note: string | null;
   created_at: string;
   updated_at: string;
@@ -178,6 +216,119 @@ export interface GiftCardTemplate {
   template_data: Record<string, unknown>;
   is_active: boolean;
   sort_order: number;
+  created_at: string;
+}
+
+// ============================================================
+// P1 MODELS
+// ============================================================
+export type GiftSubscriptionStatus = "active" | "paused" | "cancelled" | "expired";
+export type GiftSubscriptionFrequency = "weekly" | "biweekly" | "monthly";
+export type GiftLoyaltyTier = "silver" | "gold" | "diamond";
+
+export interface GiftUnwrapToken {
+  id: string;
+  order_id: string;
+  token: string;
+  recipient_viewed_at: string | null;
+  recipient_response: string | null;
+  recipient_choice_id: string | null;
+  address_confirmed: boolean;
+  confirmed_address: string | null;
+  expires_at: string | null;
+  created_at: string;
+}
+
+export interface GiftSubscription {
+  id: string;
+  profile_id: string;
+  recipient_id: string;
+  combo_tier_id: string;
+  frequency: GiftSubscriptionFrequency;
+  status: GiftSubscriptionStatus;
+  delivery_address: string | null;
+  delivery_district: string | null;
+  delivery_city: string;
+  delivery_time: string;
+  card_message: string | null;
+  next_delivery_date: string;
+  commitment_months: number;
+  discount_percent: number;
+  total_deliveries: number;
+  skipped_count: number;
+  paused_at: string | null;
+  cancelled_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GiftSubscriptionDelivery {
+  id: string;
+  subscription_id: string;
+  order_id: string | null;
+  scheduled_date: string;
+  status: string;
+  skip_reason: string | null;
+  created_at: string;
+}
+
+export interface GiftLoyaltyAccount {
+  id: string;
+  profile_id: string;
+  tier: GiftLoyaltyTier;
+  points_balance: number;
+  points_earned_total: number;
+  points_redeemed_total: number;
+  lifetime_spend: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GiftLoyaltyTransaction {
+  id: string;
+  loyalty_account_id: string;
+  type: string;
+  points: number;
+  reference_id: string | null;
+  description: string | null;
+  expires_at: string | null;
+  created_at: string;
+}
+
+export interface GiftDeliveryStaff {
+  id: string;
+  name: string;
+  phone: string;
+  is_active: boolean;
+  assigned_zones: string[];
+  max_daily_orders: number;
+  created_at: string;
+}
+
+export interface GiftDeliveryZone {
+  id: string;
+  district_code: string;
+  district_name: string;
+  city: string;
+  delivery_fee: number;
+  same_day_available: boolean;
+  same_day_cutoff: string;
+  max_daily_capacity: number;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+}
+
+export interface GiftDailyStats {
+  id: string;
+  stat_date: string;
+  total_orders: number;
+  total_revenue: number;
+  total_topup: number;
+  new_clients: number;
+  active_subscriptions: number;
+  orders_by_combo: Record<string, number>;
+  orders_by_occasion: Record<string, number>;
   created_at: string;
 }
 
@@ -236,6 +387,16 @@ export const RELATIONSHIP_CONFIG: Record<
   other: { label: "Khác", icon: "👤" },
 };
 
+export const PAYMENT_METHOD_CONFIG: Record<
+  GiftPaymentMethod,
+  { label: string; icon: string }
+> = {
+  wallet: { label: "Ví HLT", icon: "💰" },
+  bank_transfer: { label: "Chuyển khoản", icon: "🏦" },
+  cod: { label: "Thanh toán khi nhận", icon: "💵" },
+  momo: { label: "MoMo", icon: "📱" },
+};
+
 export const ORDER_STATUS_CONFIG: Record<
   GiftOrderStatus,
   { label: string; color: string; bgColor: string }
@@ -247,4 +408,42 @@ export const ORDER_STATUS_CONFIG: Record<
   delivering: { label: "Đang giao", color: "#D45C8A", bgColor: "#F8EDF2" },
   delivered: { label: "Đã giao", color: "#3A7D54", bgColor: "#E8F5ED" },
   cancelled: { label: "Đã hủy", color: "#9E3A3A", bgColor: "#F8EDED" },
+};
+
+export const SUBSCRIPTION_STATUS_CONFIG: Record<
+  GiftSubscriptionStatus,
+  { label: string; color: string; bgColor: string }
+> = {
+  active: { label: "Đang hoạt động", color: "#3A7D54", bgColor: "#E8F5ED" },
+  paused: { label: "Tạm dừng", color: "#E8A44E", bgColor: "#FEF8E8" },
+  cancelled: { label: "Đã hủy", color: "#9E3A3A", bgColor: "#F8EDED" },
+  expired: { label: "Hết hạn", color: "#9A9490", bgColor: "#F5F3F0" },
+};
+
+export const FREQUENCY_CONFIG: Record<
+  GiftSubscriptionFrequency,
+  { label: string; days: number }
+> = {
+  weekly: { label: "Hàng tuần", days: 7 },
+  biweekly: { label: "2 tuần/lần", days: 14 },
+  monthly: { label: "Hàng tháng", days: 30 },
+};
+
+export const LOYALTY_TIER_CONFIG: Record<
+  GiftLoyaltyTier,
+  { label: string; icon: string; color: string; minSpend: number; multiplier: number }
+> = {
+  silver: { label: "Bạc", icon: "🥈", color: "#9A9490", minSpend: 0, multiplier: 1 },
+  gold: { label: "Vàng", icon: "🥇", color: "#C9A96E", minSpend: 2000000, multiplier: 1.5 },
+  diamond: { label: "Kim Cương", icon: "💎", color: "#2C5F8A", minSpend: 5000000, multiplier: 2 },
+};
+
+export const PAYMENT_STATUS_CONFIG: Record<
+  GiftPaymentStatus,
+  { label: string; color: string; bgColor: string }
+> = {
+  unpaid: { label: "Chưa thanh toán", color: "#9E3A3A", bgColor: "#F8EDED" },
+  partial: { label: "Thanh toán một phần", color: "#E8A44E", bgColor: "#FEF8E8" },
+  paid: { label: "Đã thanh toán", color: "#3A7D54", bgColor: "#E8F5ED" },
+  refunded: { label: "Đã hoàn tiền", color: "#9A9490", bgColor: "#F5F3F0" },
 };
