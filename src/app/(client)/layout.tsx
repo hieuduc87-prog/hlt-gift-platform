@@ -30,7 +30,7 @@ export default async function ClientLayout({
   ]);
 
   // Admin users → redirect to admin panel
-  if (profileRes.data?.role === "admin") redirect("/admin");
+  if (profileRes.data?.role === "admin") redirect("/admin/b2bgifting");
 
   const userName = profileRes.data?.full_name || user.email || "User";
   const walletBalance = Number(walletRes.data?.balance || 0);

@@ -21,26 +21,26 @@ export default async function AdminLayout({
     .eq("id", user.id)
     .single();
 
-  if (profile?.role !== "admin") redirect("/dashboard");
+  if (profile?.role !== "admin") redirect("/hoadinhky");
 
   return (
     <div className="min-h-screen bg-admin-bg text-admin-text">
       {/* Admin sidebar */}
       <aside className="fixed inset-y-0 left-0 w-60 bg-admin-surface border-r border-admin-border flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-admin-border">
-          <Link href="/admin" className="font-display text-lg text-gold">
+          <Link href="/admin/b2bgifting" className="font-display text-lg text-gold">
             HLT Admin
           </Link>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {[
-            { href: "/admin", label: "Dashboard" },
-            { href: "/admin/orders", label: "Đơn hàng" },
-            { href: "/admin/combos", label: "Sản phẩm" },
-            { href: "/admin/clients", label: "Khách hàng" },
-            { href: "/admin/delivery", label: "Giao hàng" },
-            { href: "/admin/cards", label: "Thiệp mẫu" },
-            { href: "/admin/finance", label: "Tài chính" },
+            { href: "/admin/b2bgifting", label: "Dashboard" },
+            { href: "/admin/b2bgifting/orders", label: "Đơn hàng" },
+            { href: "/admin/b2bgifting/combos", label: "Sản phẩm" },
+            { href: "/admin/b2bgifting/clients", label: "Khách hàng" },
+            { href: "/admin/b2bgifting/delivery", label: "Giao hàng" },
+            { href: "/admin/b2bgifting/cards", label: "Thiệp mẫu" },
+            { href: "/admin/b2bgifting/finance", label: "Tài chính" },
           ].map((item) => (
             <Link
               key={item.href}

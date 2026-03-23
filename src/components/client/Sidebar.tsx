@@ -19,15 +19,15 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Trang chủ", icon: LayoutDashboard },
-  { href: "/catalog", label: "Bộ sưu tập", icon: Sparkles },
-  { href: "/recipients", label: "Người nhận", icon: Users },
-  { href: "/orders", label: "Đơn hàng", icon: ShoppingBag },
-  { href: "/subscriptions", label: "Đăng ký định kỳ", icon: CalendarClock },
-  { href: "/wallet", label: "Ví của tôi", icon: Wallet },
-  { href: "/cards", label: "Thiệp chúc", icon: CreditCard },
-  { href: "/loyalty", label: "Tích điểm", icon: Star },
-  { href: "/settings", label: "Cài đặt", icon: Settings },
+  { href: "/hoadinhky", label: "Trang chủ", icon: LayoutDashboard },
+  { href: "/hoadinhky/catalog", label: "Bộ sưu tập", icon: Sparkles },
+  { href: "/hoadinhky/recipients", label: "Người nhận", icon: Users },
+  { href: "/hoadinhky/orders", label: "Đơn hàng", icon: ShoppingBag },
+  { href: "/hoadinhky/subscriptions", label: "Đăng ký định kỳ", icon: CalendarClock },
+  { href: "/hoadinhky/wallet", label: "Ví của tôi", icon: Wallet },
+  { href: "/hoadinhky/cards", label: "Thiệp chúc", icon: CreditCard },
+  { href: "/hoadinhky/loyalty", label: "Tích điểm", icon: Star },
+  { href: "/hoadinhky/settings", label: "Cài đặt", icon: Settings },
 ];
 
 export function Sidebar() {
@@ -61,7 +61,7 @@ export function Sidebar() {
       >
         {/* Logo */}
         <div className="h-16 flex items-center px-6 border-b border-border">
-          <Link href="/dashboard" className="font-display text-xl text-gold">
+          <Link href="/hoadinhky" className="font-display text-xl text-gold">
             Hoa Lang Thang
           </Link>
         </div>

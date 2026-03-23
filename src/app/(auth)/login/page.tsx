@@ -10,7 +10,7 @@ type Tab = "individual" | "business";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/dashboard";
+  const redirect = searchParams.get("redirect") || "/hoadinhky";
 
   const [tab, setTab] = useState<Tab>("individual");
   const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ function LoginForm() {
         .single();
 
       if (profile?.role === "admin") {
-        router.push("/admin");
+        router.push("/admin/b2bgifting");
       } else {
         router.push(redirect);
       }

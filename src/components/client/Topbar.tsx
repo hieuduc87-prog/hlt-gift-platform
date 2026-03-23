@@ -45,7 +45,7 @@ export function Topbar({ userName, walletBalance }: TopbarProps) {
       <div className="flex items-center gap-4">
         {/* Wallet balance */}
         <Link
-          href="/wallet"
+          href="/hoadinhky/wallet"
           className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gold-bg text-gold hover:bg-gold-bg/80 transition-colors"
         >
           <Wallet size={16} />
@@ -70,7 +70,7 @@ export function Topbar({ userName, walletBalance }: TopbarProps) {
           {dropdownOpen && (
             <div className="absolute right-0 top-full mt-2 w-48 bg-surface border border-border rounded-lg shadow-lg py-1 z-50">
               <Link
-                href="/settings"
+                href="/hoadinhky/settings"
                 className="block px-4 py-2 text-sm text-text-secondary hover:bg-surface-hover"
                 onClick={() => setDropdownOpen(false)}
               >

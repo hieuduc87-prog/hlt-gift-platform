@@ -1,17 +1,8 @@
 import { updateSession } from "@/lib/supabase/middleware";
 import { NextResponse, type NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/", "/auth", "/login", "/register", "/catalog", "/gift"];
-const CLIENT_PATHS = [
-  "/dashboard",
-  "/recipients",
-  "/orders",
-  "/subscriptions",
-  "/wallet",
-  "/cards",
-  "/loyalty",
-  "/settings",
-];
+const PUBLIC_PATHS = ["/", "/auth", "/login", "/register", "/gift"];
+const CLIENT_PATHS = ["/hoadinhky"];
 const ADMIN_PATHS = ["/admin"];
 
 export async function middleware(request: NextRequest) {
