@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Typography */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  /* Client (Light) */
+  --color-background: #FAF8F5;
+  --color-foreground: #1A1A1A;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F5F0E8;
+  --color-border: #EDE9E3;
+  --color-border-subtle: #F5F0E8;
+
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #6A6460;
+  --color-text-muted: #9A9490;
+
+  --color-gold: #C9A96E;
+  --color-gold-light: #DFC08A;
+  --color-gold-dark: #A68B55;
+  --color-gold-bg: #FDF8F0;
+
+  --color-success: #3A7D54;
+  --color-success-bg: #E8F5ED;
+  --color-warning: #E8A44E;
+  --color-warning-bg: #FEF8E8;
+  --color-error: #9E3A3A;
+  --color-error-bg: #F8EDED;
+  --color-info: #2C5F8A;
+  --color-info-bg: #E8F0F8;
+
+  /* Admin (Dark) */
+  --color-admin-bg: #0C0C0C;
+  --color-admin-surface: #151515;
+  --color-admin-surface-hover: #1E1E1E;
+  --color-admin-border: #222222;
+  --color-admin-text: #E8E4DE;
+  --color-admin-text-secondary: #6A6460;
+}
+
+body {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-display {
+  font-family: var(--font-display), serif;
+}
